@@ -1,0 +1,74 @@
+﻿@using CourseManagementSystem.Entities
+@model CourseManagementSystem.ViewModels.ManageCourseViewModel
+
+@{
+    if (Model == null)
+    {
+        <p>Error: Model is null</p>
+        return;
+    }
+    ViewData["Title"] = "Manage your course";
+}
+
+<h1>Manage your course</h1>
+<p><a asp-controller="CourseManagementSystem" asp-action="GetAllCourses">All courses</a> | <a asp-action="GetEditCourseRequestById" asp-controller="CourseManagementSystem" asp-route-CourseId="@Model.Students.FirstOrDefault()?.CourseId">Edit this course</a> | <a asp-action="GetAddCourseRequest" asp-controller="CourseManagementSystem">Add new course</a></p>
+
+<p><strong>Course summary:</strong></p>
+<p>The course "@Model.CourseName" is in room @Model.RoomNumber starting on @Model.StartDate and the instructor is "@Model.Instructor".</p>
+<p>Invites not sent: @Model.StudentsConfirmationMessageNotSentCount | Sent count:@Model.StudentsConfirmationMessageSentCount | Confirmed count: @Model.StudentsEnrollmentConfirmedCount | Declined count: @Model.StudentsEnrollmentDeclinedCount</p>
+<div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Enrollment status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Students.Any())
+        {
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@student.Name</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(student.Email))
+                            {
+                                <a href="mailto:@student.Email">@student.Email</a>
+                            }
+                            else
+                            {
+                                @student.Email
+                            }
+                        </td>
+                    <td>@Html.DisplayFor(modelItem => student.EnrollmentStatus)</td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>
+
+<div style="width: 100%;">
+    <form asp-controller="CourseManagementSystem" asp-action="AddNewStudent" asp-route-courseId="@Model.NewStudent.CourseId" method="post" enctype="application/x-www-form-urlencoded" style="display: flex; align-items: left; justify-content: space-between; width: 100%;">
+
+        <div class="text-danger" asp-validation-summary="All"></div>
+
+        <label asp-for="NewStudent.Name" style="margin-right: 5px;">Name</label>
+        <input type="text" asp-for="NewStudent.Name" class="form-control" style="margin-right: 15px; flex-grow: 1; min-width: 150px;" />
+
+        <label asp-for="NewStudent.Email" style="margin-right: 5px;">Email</label>
+        <input type="text" asp-for="NewStudent.Email" class="form-control" style="margin-right: 15px; flex-grow: 1; min-width: 150px;" />
+
+        <input type="hidden" asp-for="CourseId" value="@Model.CourseId"/>
+        <input type="hidden" asp-for="Course" value="@Model.Course" />
+
+        <button type="submit" class="btn btn-primary" style="flex-shrink: 0;">Create student</button>
+    </form>
+</div>
+<div>    
+    <form asp-controller="CourseManagementSystem" asp-action="SendConfirmationEmail" asp-route-courseId="@Model.CourseId" method="post">
+        <button type="submit" class="btn btn-primary">Send confirmation email</button>
+    </form>
+</div>

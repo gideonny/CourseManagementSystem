@@ -1,0 +1,33 @@
+﻿@model CourseManagementSystem.ViewModels.EnrollmentViewModel
+
+<h1>Confirmation response</h1>
+<p><strong>You have been invited to enroll in the "@Model.CourseName" course!</strong></p>
+<p>Hey @Model.StudentName, you have been invited to enroll in the "@Model.CourseName" in @Model.RoomNumber starting on the @Model.StartDate with @Model.Instructor - we would be thrilled to have you join us but ask that you confirm your enrollment!</p>
+<div style="width: 100%;">
+    
+    <div>
+        <form asp-controller="CourseManagementSystem" asp-action="ProcessConfirmEnrollment" method="post" style="display: flex; align-items: left; justify-content: space-between; width: 100%;">
+        
+            <div class="text-danger" asp-validation-summary="All"></div>
+
+            <input type="hidden" name="StudentId" value="@Model.StudentId" />
+     
+        
+         
+                 Do you want to enroll?
+                <!-- Yes radio button (Confirm) -->
+                <input type="radio" id="enrollYes" name="IsConfirmed" value="true"
+                @(Model.IsConfirmed ? "checked" : "") />
+                <label for="enrollYes">Yes</label><br>
+
+                <!-- No radio button (Decline) -->
+                <input type="radio" id="enrollNo" name="IsConfirmed" value="false"
+                @(!Model.IsConfirmed ? "checked" : "") />
+                <label for="enrollNo">No</label><br>
+
+                <button type="submit" class="btn btn-primary">Submit response</button>
+         
+        
+        </form>
+    </div>
+</div>

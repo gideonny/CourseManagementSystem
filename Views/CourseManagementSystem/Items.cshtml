@@ -1,0 +1,37 @@
+﻿@using CourseManagementSystem.Entities
+@model List<Course>
+@{
+    ViewData["Title"] = "List of courses";
+}
+
+<h1>All my courses</h1>
+<a asp-action="GetAddCourseRequest" asp-controller="CourseManagementSystem">Add new course</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Instructor</th>
+            <th>Start date</th>
+            <th>Room #</th>
+            <th># of students</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Course m in Model)
+        {
+            <tr>
+                <td>@m.Name</td>
+                <td>@m.Instructor</td>
+                <td>@m.StartDate</td> 
+                <td>@m.RoomNumber</td>
+                <td>@m.Students?.Count</td>
+                <td>
+                    <a asp-action="ManageCourse" asp-controller="CourseManagementSystem" asp-route-CourseId="@m.CourseId" class="btn btn-primary">Manage</a>
+                    <span class="mx-1">|</span>
+                    <a asp-action="GetEditCourseRequestById" asp-controller="CourseManagementSystem" asp-route-CourseId="@m.CourseId" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

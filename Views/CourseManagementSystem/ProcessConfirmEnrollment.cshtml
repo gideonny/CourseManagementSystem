@@ -1,0 +1,12 @@
+﻿@model CourseManagementSystem.ViewModels.EnrollmentViewModel
+
+@if (Model.IsConfirmed)
+{
+    <h1>Thank you</h1>
+    <p>Thank you for submitting your response! We are thrilled that you will be joining us!</p>
+}
+else
+{
+    <h1>Sorry to see you decline.</h1>
+    <p>We will be happy to enroll you at a later date, if you change your mind.</p>
+}
